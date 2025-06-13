@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Toko Olahraga</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f4f4f4;
+    }
+
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      padding: 20px;
+    }
+
+    .products {
+      flex: 2;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .product {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .product img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .product button {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .cart {
+      flex: 1;
+      background: white;
+      margin-left: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .cart h2 {
+      margin-top: 0;
+    }
+
+    .cart-item {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Toko Olahraga</h1>
+  </header>
+
+  <div class="container">
+    <div class="products" id="product-list"></div>
+
+    <div class="cart">
+      <h2>Keranjang</h2>
+      <div id="cart-items"></div>
+      <p><strong>Total: Rp <span id="total-price">0</span></strong></p>
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      { id: 1, name: "Sepatu Running hyperblast 2.1", price: 750000, image: "sepatu.jpg" },
+      { id: 2, name: "Jersey Running", price: 43000, image: "Kaos.jpg" },
+      { id: 3, name: "Kacamata Lari", price: 53000, image: "kacamata.jpg" },
+    ];
+
+    const cart = [];
+    const productList = document.getElementById("product-list");
+    const cartItems = document.getElementById("cart-items");
+    const totalPrice = document.getElementById("total-price");
+
+    function renderProducts() {
+      products.forEach(product => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" />
+          <h3>${product.name}</h3>
+          <p>Rp ${product.price.toLocaleString()}</p>
+          <button onclick="addToCart(${product.id})">Tambah ke Keranjang</button>
+        `;
+        productList.appendChild(div);
+      });
+    }
+
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      cart.push(product);
+      renderCart();
+    }
+
+    function renderCart() {
+      cartItems.innerHTML = "";
+      let total = 0;
+      cart.forEach(item => {
+        total += item.price;
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `<p>${item.name} - Rp ${item.price.toLocaleString()}</p>`;
+        cartItems.appendChild(div);
+      });
+      totalPrice.textContent = total.toLocaleString();
+    }
+
+    renderProducts();
+  </script>
+
+</body>
+</html>
